@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir /var/www/
-sudo mount -t efs -o tls,accesspoint=fsap-0f6415182d4e5c4a6 fs-0299679621da79f13:/ /var/www/
+sudo mount -t efs -o tls,accesspoint=fsap-0aae88ec15aa90f85 fs-0edb4f7ce2dd5d648:/ /var/www/
 yum install -y httpd 
 systemctl start httpd
 systemctl enable httpd
@@ -13,10 +13,10 @@ git clone https://github.com/babslekson/tooling.git
 mkdir /var/www/html
 cp -R /tooling/html/*  /var/www/html/
 cd /tooling
-mysql -h acs-database.ciwtyzcsvgsx.eu-north-1.rds.amazonaws.com -u ACSadmin -p toolingdb < tooling-db.sql
+mysql -h olalekan-database.cixtanntjbvk.us-east-1.rds.amazonaws.com -u admin -p toolingdb < tooling-db.sql
 cd /var/www/html/
 touch healthstatus
-sed -i "s/$db = mysqli_connect('mysql.tooling.svc.cluster.local', 'admin', 'admin', 'tooling');/$db = mysqli_connect('acs-database.ciwtyzcsvgsx.eu-north-1.rds.amazonaws.com', 'ACSadmin', 'admin12345', 'toolingdb');/g" functions.php
+sed -i "s/$db = mysqli_connect('mysql.tooling.svc.cluster.local', 'admin', 'admin', 'tooling');/$db = mysqli_connect('olalekan-database.cixtanntjbvk.us-east-1.rds.amazonaws.com', 'admin', '12345678', 'toolingdb');/g" functions.php
 chcon -t httpd_sys_rw_content_t /var/www/html/ -R
 systemctl restart httpd
 
